@@ -50,6 +50,10 @@
             else
             {
                 const sent_msg = msg.data;
+                msg_split  = sent_msg.split(":");
+                msg_tokens = msg_split[0].split("from ");
+                msg_sender_id = msg_tokens[1];
+                to_id = msg_sender_id;
                 getMessage(sent_msg);
             }
         };
