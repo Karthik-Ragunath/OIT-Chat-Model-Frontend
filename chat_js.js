@@ -27,7 +27,7 @@
             console.log("OPENED:", socket.readyState);
             socket.send(JSON.stringify({
                 "register": true, 
-                "device_name": "JS Device"
+                "device_name": "Karthik Ragunath"
             }));
         };
 
@@ -50,11 +50,24 @@
             else
             {
                 const sent_msg = msg.data;
-                msg_split  = sent_msg.split(":");
-                msg_tokens = msg_split[0].split("from ");
-                msg_sender_id = msg_tokens[1];
-                to_id = msg_sender_id;
-                getMessage(sent_msg);
+                if(sent_msg.split(" ").includes("AutomatedResponse:"))
+                {
+                    getMessage(sent_msg);
+                }
+                else
+                {
+                    msg_split  = sent_msg.split(":");
+                    if(msg_split.length != 1)
+                    {
+                        msg_tokens = msg_split[0].split("from ");
+                        if(msg_tokens.length != 1)
+                        {
+                            msg_sender_id = msg_tokens[1];
+                            to_id = msg_sender_id;
+                        }
+                    }
+                    getMessage(sent_msg);
+                }
             }
         };
 
@@ -97,7 +110,16 @@
             });
             message.draw();
 
-            const json_obj = {"auth_key": api_key, "to_id": to_id, "message": text}
+            var json_obj = null;
+            if(text.split(" ").includes("NLP:"))
+            {
+                msg_split = text.split("NLP:")
+                json_obj = {"auth_key": api_key, "question": msg_split[1]}
+            }
+            else
+            {
+                json_obj = {"auth_key": api_key, "to_id": to_id, "message": text}
+            }
             const msg_string = JSON.stringify(json_obj)
             socket.send(msg_string);
             return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
