@@ -19,7 +19,7 @@
     $(function() {
 
         var socket = new WebSocket("ws://34.201.250.165:7890");
-        var to_id = "Amma";
+        var to_id = "Mom";
         var api_key = null;
         var is_first = true;
 
