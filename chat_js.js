@@ -16,11 +16,12 @@
         return this;
     };
 
-
-
     $(function() {
 
         var socket = new WebSocket("ws://34.201.250.165:7890");
+        var to_id = "Karthik Ragunath";
+        var api_key = null;
+        var is_first = true;
 
         socket.onopen = function(){
             console.log("OPENED:", socket.readyState);
@@ -35,13 +36,22 @@
         };
 
         socket.onmessage = function(msg){
-            console.log(msg);
-            const sent_msg = msg.data;
-            console.log(sent_msg);
-            const msg_toks = sent_msg.split(" ");
-            const api_key = msg_toks[msg_toks.length - 1];
-            console.log("API Key is: " + api_key);
-            getMessage(sent_msg);
+            if (is_first)
+            {
+                console.log(msg);
+                const sent_msg = msg.data;
+                console.log(sent_msg);
+                const msg_toks = sent_msg.split(" ");
+                api_key = msg_toks[msg_toks.length - 1];
+                console.log("API Key is: " + api_key);
+                getMessage(sent_msg);
+                is_first = false;
+            }
+            else
+            {
+                const sent_msg = msg.data;
+                getMessage(sent_msg);
+            }
         };
 
         var getMessageText, message_side, sendMessage;
@@ -60,7 +70,7 @@
             }
             $('.message_input').val('');
             $messages = $('.messages');
-            message_side = message_side === 'left' ? 'right' : 'left';
+            message_side = 'left';
             message = new Message({
                 text: text,
                 message_side: message_side
@@ -76,13 +86,18 @@
             }
             $('.message_input').val('');
             $messages = $('.messages');
-            message_side = message_side === 'left' ? 'right' : 'left';
+            message_side = 'right';
             message = new Message({
                 text: text,
                 message_side: message_side
             });
             message.draw();
+
+            const json_obj = {"auth_key": auth_key, "to_id": to_id, "message": text}
+            const msg_string = JSON.stringify(json_obj)
+            socket.send(msg_string);
             return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
+
         };
 
         $('.send_message').click(function(e) {
@@ -93,12 +108,12 @@
                 return sendMessage(getMessageText());
             }
         });
-        sendMessage('Hello Philip! :)');
-        setTimeout(function() {
-            return sendMessage('Hi Sandy! How are you?');
-        }, 1000);
-        return setTimeout(function() {
-            return sendMessage('I\'m fine, thank you!');
-        }, 2000);
+        // sendMessage('Hello Philip! :)');
+        // setTimeout(function() {
+        //     return sendMessage('Hi Sandy! How are you?');
+        // }, 1000);
+        // return setTimeout(function() {
+        //     return sendMessage('I\'m fine, thank you!');
+        // }, 2000);
     });
 }.call(this));
