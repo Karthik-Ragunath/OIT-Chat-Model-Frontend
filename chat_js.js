@@ -15,14 +15,60 @@
         }(this);
         return this;
     };
+
+
+
     $(function() {
+
+        var socket = new WebSocket("ws://34.201.250.165:7890");
+
+        socket.onopen = function(){
+            console.log("OPENED:", socket.readyState);
+            socket.send(JSON.stringify({
+                "register": true, 
+                "device_name": "JS Device"
+            }));
+        };
+
+        socket.onclose = function(){
+            console.log("CLOSED:", socket.readyState);
+        };
+
+        socket.onmessage = function(msg){
+            console.log(msg);
+            const sent_msg = msg.data;
+            console.log(sent_msg);
+            const msg_toks = sent_msg.split(" ");
+            const api_key = msg_toks[msg_toks.length - 1];
+            console.log("API Key is: " + api_key);
+            getMessage(sent_msg);
+        };
+
         var getMessageText, message_side, sendMessage;
         message_side = 'right';
+
         getMessageText = function() {
             var $message_input;
             $message_input = $('.message_input');
             return $message_input.val();
         };
+
+        getMessage = function(text) {
+            var $messages, message;
+            if (text.trim() === '') {
+                return;
+            }
+            $('.message_input').val('');
+            $messages = $('.messages');
+            message_side = message_side === 'left' ? 'right' : 'left';
+            message = new Message({
+                text: text,
+                message_side: message_side
+            });
+            message.draw();
+            return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
+        };
+
         sendMessage = function(text) {
             var $messages, message;
             if (text.trim() === '') {
@@ -38,6 +84,7 @@
             message.draw();
             return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
         };
+
         $('.send_message').click(function(e) {
             return sendMessage(getMessageText());
         });
