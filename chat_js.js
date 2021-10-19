@@ -93,7 +93,7 @@
             });
             message.draw();
 
-            const json_obj = {"auth_key": auth_key, "to_id": to_id, "message": text}
+            const json_obj = {"auth_key": api_key, "to_id": to_id, "message": text}
             const msg_string = JSON.stringify(json_obj)
             socket.send(msg_string);
             return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
