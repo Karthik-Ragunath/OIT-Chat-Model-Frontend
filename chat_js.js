@@ -19,7 +19,7 @@
     $(function() {
 
         var socket = new WebSocket("ws://34.201.250.165:7890");
-        var to_id = "Karthik Ragunath";
+        var to_id = "Amma";
         var api_key = null;
         var is_first = true;
 
@@ -108,12 +108,5 @@
                 return sendMessage(getMessageText());
             }
         });
-        // sendMessage('Hello Philip! :)');
-        // setTimeout(function() {
-        //     return sendMessage('Hi Sandy! How are you?');
-        // }, 1000);
-        // return setTimeout(function() {
-        //     return sendMessage('I\'m fine, thank you!');
-        // }, 2000);
     });
 }.call(this));
