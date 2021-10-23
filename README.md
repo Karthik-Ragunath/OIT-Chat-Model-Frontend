@@ -9,6 +9,10 @@ node server.js
 npm install websocket
 ```
 
-### Sample Screenshot of Front-End
+### Chat Whenever And Wherever You Want!!!
 
 ![alt text](/Assets/front_end_screenshot.png)
+
+### Get Automated From OIT By Tagging Your Request With 'NLP' Tag
+
+![alt text](/Assets/front_end_automated_call.png)
