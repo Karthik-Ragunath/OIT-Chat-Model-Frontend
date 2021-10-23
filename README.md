@@ -13,6 +13,6 @@ npm install websocket
 
 ![alt text](/Assets/front_end_screenshot.png)
 
-### Get Automated HELP From OIT By Tagging Your Request With 'NLP' Tag
+### Get Automated HELP From OIT By Tagging Your Request With 'NLP: ' Tag
 
 ![alt text](/Assets/front_end_automated_call.png)
